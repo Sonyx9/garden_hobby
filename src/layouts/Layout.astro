@@ -1,0 +1,52 @@
+---
+import '../styles/global.css';
+import type { Lang } from '../data/content';
+
+interface Props {
+  lang?: Lang;
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const { 
+  lang = 'en',
+  title,
+  description,
+  image = '/images/hero-bg.jpg',
+} = Astro.props;
+
+const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '') || '';
+const site = Astro.site?.toString() || 'https://example.com';
+// pathname already includes base when building with base (e.g. /garden_hobby/ or /garden_hobby/cz/)
+const canonicalURL = new URL(Astro.url.pathname, site);
+const ogImageURL = new URL(base + image.replace(/^\//, ''), site);
+const htmlLang = lang === 'cz' ? 'cs' : 'en';
+const ogLocale = lang === 'cz' ? 'cs_CZ' : 'en_GB';
+---
+
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+    
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:locale" content={ogLocale} />
+  </head>
+  <body class="min-h-screen">
+    <slot />
+  </body>
+</html>
