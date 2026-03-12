@@ -96,6 +96,6 @@ export const content = {
 } as const;
 
 export const contacts = {
-  email: 'pecimichal@gmail.com',
-  phone: '+420 731 000 307',
+  email: 'curator@gardenandhobby.com',
+  phone: '+420 735 30 60 10',
 };
